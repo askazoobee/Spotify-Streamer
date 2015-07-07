@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -52,16 +54,17 @@ public class TrackAdapter extends ArrayAdapter<TrackData>{
         // If not, this view already has the layout inflated from a previous call to getView,
         // and we modify the View widgets as usual.
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.artist_list_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.track_list_item, parent, false);
         }
 
-        ImageView iconView = (ImageView) convertView.findViewById(R.id.artist_img);
-        iconView.setImageResource(trackData.album_image);
+        ImageView iconView = (ImageView) convertView.findViewById(R.id.album_image);
+      //  iconView.setImageResource(trackData.album_image);
+        Picasso.with(getContext()).load(trackData.album_image).into(iconView);
 
-        TextView trackView = (TextView) convertView.findViewById(R.id.artist_txt);
+        TextView trackView = (TextView) convertView.findViewById(R.id.track_text);
         trackView.setText(trackData.track_name);
 
-        TextView albumView = (TextView) convertView.findViewById(R.id.artist_txt);
+        TextView albumView = (TextView) convertView.findViewById(R.id.album_text);
         albumView.setText(trackData.album_name);
 
         return convertView;

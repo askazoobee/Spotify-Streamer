@@ -43,11 +43,10 @@ public class FetchArtistTask extends AsyncTask<String,Void,ArtistData[]> {
                 List<Artist> artists = results.artists.items;
                 ArtistData[] data_artist = new ArtistData[artists.size()];
 
-
                 for (int i = 0; i < artists.size(); i++) {
 
                     Artist artist = artists.get(i);
-
+                    //artist.href.toString()
                     Log.i(LOG_TAG, i + " " + artist.name);
 
                     //for (int g = 0; g < artist.images.size(); g++) {

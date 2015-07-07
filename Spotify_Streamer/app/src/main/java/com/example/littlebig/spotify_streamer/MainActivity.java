@@ -35,16 +35,12 @@ public class MainActivity extends ActionBarActivity {
             }
         });
     }
-private void search_artist(String name){
-    FetchArtistTask fetch_artist = new FetchArtistTask();
-    fetch_artist.execute(name);
-}
 
     public void onStart() {
         super.onStart();
     }
 
-    private void onSearch(String name) {
+    public void onSearch(String name) {
         FetchArtistTask fetch_artist = new FetchArtistTask();
         fetch_artist.execute(name);
 

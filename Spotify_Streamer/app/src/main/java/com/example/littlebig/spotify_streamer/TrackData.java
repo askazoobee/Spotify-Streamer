@@ -7,9 +7,9 @@ public class TrackData {
 
     String track_name;
     String album_name;
-    int album_image; //drawable ID
+    String album_image; //drawable ID
 
-    public TrackData(String track,String album, int image){
+    public TrackData(String track,String album, String image){
         this.track_name = track;
         this.album_name = album;
         this.album_image = image;
