@@ -29,6 +29,7 @@ public class MainActivity extends ActionBarActivity {
                     String search = search_artist.getText().toString();
                     onSearch(search);
                     // ...
+
                     return true;
                 }
                 return false;
@@ -41,8 +42,13 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void onSearch(String name) {
-        FetchArtistTask fetch_artist = new FetchArtistTask();
+        FetchArtistTask fetch_artist = new FetchArtistTask(getApplicationContext());
         fetch_artist.execute(name);
+    }
+
+
+
+
 
 /*    public void searchArtist(View v) {
         EditText search = (EditText) findViewById(R.id.edit_artist);
@@ -50,6 +56,6 @@ public class MainActivity extends ActionBarActivity {
         updateArtist(search_artist);
     }*/
 
-    }
+
 }
 

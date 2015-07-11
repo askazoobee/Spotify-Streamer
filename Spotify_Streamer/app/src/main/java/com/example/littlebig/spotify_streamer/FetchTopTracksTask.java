@@ -55,15 +55,12 @@ public class FetchTopTracksTask extends AsyncTask<String,Void,TrackData[]>{
                 for (int i = 0; i < tracks.size(); i++) {
 
                     Track track = tracks.get(i);
-                    //artist.href.toString()
                     Log.i(LOG_TAG, i + " " + track.name);
 
-                    //for (int g = 0; g < artist.images.size(); g++) {
                     if (track.album.images.size() != 0) {
                         TrackData track_data = new TrackData(
                                 track.name,
                                 track.album.name,
-                                //"http://www.sitindia.com/res/img/img-not-found.png"
                                 track.album.images.get(0).url
                         );
                         data_track[i] = track_data;
@@ -76,7 +73,6 @@ public class FetchTopTracksTask extends AsyncTask<String,Void,TrackData[]>{
                         data_track[i] = track_data;
                     }
                 }
-                //  }
                 for (TrackData s : data_track) {
                     Log.v(LOG_TAG, "ARTIST entry: " + s);
                 }

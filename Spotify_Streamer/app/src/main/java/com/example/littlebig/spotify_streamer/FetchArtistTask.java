@@ -1,8 +1,11 @@
 package com.example.littlebig.spotify_streamer;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONException;
 
@@ -26,13 +29,19 @@ public class FetchArtistTask extends AsyncTask<String,Void,ArtistData[]> {
 
     private final String LOG_TAG = FetchArtistTask.class.getSimpleName();
 
+    private Context context;
 
+    //in constructor:
+    public FetchArtistTask(Context context) {
+        this.context = context;
+    }
 
     protected ArtistData[] doInBackground(String... params) {
 
+
         if (params.length == 0) {
             return null;
-        }else {
+        } else {
             try {
 
 
@@ -41,36 +50,37 @@ public class FetchArtistTask extends AsyncTask<String,Void,ArtistData[]> {
 
                 ArtistsPager results = service.searchArtists(params[0]);
                 List<Artist> artists = results.artists.items;
-                ArtistData[] data_artist = new ArtistData[artists.size()];
+                if (artists.size() == 0) {
+                    return null;
+                } else {
+                    ArtistData[] data_artist = new ArtistData[artists.size()];
 
-                for (int i = 0; i < artists.size(); i++) {
+                    for (int i = 0; i < artists.size(); i++) {
 
-                    Artist artist = artists.get(i);
-                    //artist.href.toString()
-                    Log.i(LOG_TAG, i + " " + artist.name);
+                        Artist artist = artists.get(i);
+                        //artist.href.toString()
+                        Log.i(LOG_TAG, i + " " + artist.name);
 
-                    //for (int g = 0; g < artist.images.size(); g++) {
-                    if (artist.images.size() != 0) {
-                        ArtistData artist_data = new ArtistData(
-                                artist.name,
-                                artist.images.get(0).url
-                        );
-                        data_artist[i] = artist_data;
-                    } else {
-                        ArtistData artist_data = new ArtistData(
-                                artist.name,
-                                "http://www.sitindia.com/res/img/img-not-found.png"
-                        );
-                        data_artist[i] = artist_data;
+                        if (artist.images.size() != 0) {
+                            ArtistData artist_data = new ArtistData(
+                                    artist.name,
+                                    artist.images.get(0).url
+                            );
+                            data_artist[i] = artist_data;
+                        } else {
+                            ArtistData artist_data = new ArtistData(
+                                    artist.name,
+                                    "http://www.sitindia.com/res/img/img-not-found.png"
+                            );
+                            data_artist[i] = artist_data;
+                        }
                     }
-                }
-                //  }
-                for (ArtistData s : data_artist) {
-                    Log.v(LOG_TAG, "ARTIST entry: " + s);
-                }
+                    for (ArtistData s : data_artist) {
+                        Log.v(LOG_TAG, "ARTIST entry: " + s);
+                    }
 
-                return data_artist;
-
+                    return data_artist;
+                }
             } catch (Exception e) {
                 Log.e(LOG_TAG, "Error ", e);
                 // If the code didn't successfully get the data, there's no point in attempting
@@ -80,22 +90,18 @@ public class FetchArtistTask extends AsyncTask<String,Void,ArtistData[]> {
         }
     }
 
+
     @Override
     protected void onPostExecute(ArtistData[] result) {
-        if(result != null){
-                MainActivityFragment.artistAdapter.clear();
-            for ( ArtistData artist : result){
+        if (result != null) {
+            MainActivityFragment.artistAdapter.clear();
+            for (ArtistData artist : result) {
                 MainActivityFragment.artistAdapter.add(artist);
             }
+        } else {
+            Toast.makeText(context, "No matching artists found. Please refine search", Toast.LENGTH_LONG).show();
         }
+
+
     }
-
-
-
-
-
-
-
-
-
 }

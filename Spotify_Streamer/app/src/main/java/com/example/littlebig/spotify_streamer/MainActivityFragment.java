@@ -1,5 +1,6 @@
 package com.example.littlebig.spotify_streamer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -22,7 +23,6 @@ import java.util.List;
 public class MainActivityFragment extends Fragment {
 
     public static ArtistAdapter artistAdapter;
-
     public MainActivityFragment() {
     }
 
@@ -45,7 +45,7 @@ public class MainActivityFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 TextView artist_name = (TextView) rootView.findViewById(R.id.artist_txt);
-
+                Toast.makeText(getActivity(), "Track: ", Toast.LENGTH_LONG).show();
                 Toast.makeText(getActivity(), "Track: " + artist_name.getText().toString(), Toast.LENGTH_LONG).show();
                 // getActivity instead of ..adapterView.getContext()
 
