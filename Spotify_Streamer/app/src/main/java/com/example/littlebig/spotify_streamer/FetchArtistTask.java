@@ -30,14 +30,12 @@ public class FetchArtistTask extends AsyncTask<String,Void,ArtistData[]> {
     private final String LOG_TAG = FetchArtistTask.class.getSimpleName();
 
     private Context context;
-
-    //in constructor:
+    //context from MainActivity for display of toast in asynctask
     public FetchArtistTask(Context context) {
         this.context = context;
     }
 
     protected ArtistData[] doInBackground(String... params) {
-
 
         if (params.length == 0) {
             return null;
@@ -99,7 +97,7 @@ public class FetchArtistTask extends AsyncTask<String,Void,ArtistData[]> {
                 MainActivityFragment.artistAdapter.add(artist);
             }
         } else {
-            Toast.makeText(context, "No matching artists found. Please refine search", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "No matching artists found. Please refine search and try again.", Toast.LENGTH_LONG).show();
         }
 
 

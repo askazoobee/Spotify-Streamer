@@ -30,13 +30,11 @@ public class DetailActivityFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
-        // The detail Activity called via intent.  Inspect the intent for forecast data.
+        // The detail Activity called via intent.  Inspect the intent for artist data.
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             artist_name_extra = intent.getStringExtra(Intent.EXTRA_TEXT);
         }
-
-
 
 
         trackAdapter = new TrackAdapter(getActivity(), new ArrayList<TrackData>());

@@ -5,7 +5,7 @@ package com.example.littlebig.spotify_streamer;
  */
 public class ArtistData {
     String artist_name;
-    String artist_image; //drawable ID
+    String artist_image;
 
     public ArtistData(String artist, String image){
         this.artist_name = artist;

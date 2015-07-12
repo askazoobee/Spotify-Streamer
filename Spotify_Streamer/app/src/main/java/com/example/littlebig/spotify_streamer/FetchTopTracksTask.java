@@ -20,10 +20,6 @@ import kaaes.spotify.webapi.android.models.TracksPager;
  */
 public class FetchTopTracksTask extends AsyncTask<String,Void,TrackData[]>{
 
-
-
-
-
     private final String LOG_TAG = FetchArtistTask.class.getSimpleName();
 
 

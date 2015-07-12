@@ -14,7 +14,7 @@
         android:id="@+id/edit_artist"
         android:inputType="text"
         android:layout_marginBottom="16dp"
-        android:hint="Enter Artist name here!"
+        android:hint="Enter Artist name here! Then press enter."
         />
     <LinearLayout
         android:layout_width="fill_parent"

@@ -26,7 +26,7 @@ public class ArtistAdapter extends ArrayAdapter<ArtistData> {
      * to populate into the lists
      *
      * @param context        The current context. Used to inflate the layout file.
-     * @param artist_data   A List of AndroidFlavor objects to display in a list
+     * @param artist_data   A List of objects to display in a list
      */
     public ArtistAdapter(Activity context, List<ArtistData> artist_data) {
         // Here, we initialize the ArrayAdapter's internal storage for the context and the list.
@@ -47,7 +47,7 @@ public class ArtistAdapter extends ArrayAdapter<ArtistData> {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Gets the AndroidFlavor object from the ArrayAdapter at the appropriate position
+        // Gets the object from the ArrayAdapter at the appropriate position
         ArtistData artistData = getItem(position);
 
         // Adapters recycle views to AdapterViews.
