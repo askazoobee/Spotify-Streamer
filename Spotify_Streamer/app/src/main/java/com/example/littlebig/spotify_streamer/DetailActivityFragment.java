@@ -20,7 +20,7 @@ public class DetailActivityFragment extends Fragment {
     public static String artist_name_extra;
 
     public static TrackAdapter trackAdapter;
-
+public static ArrayList<TrackData> trackList = new ArrayList<TrackData>();
     public DetailActivityFragment() {
     }
 
@@ -37,7 +37,7 @@ public class DetailActivityFragment extends Fragment {
         }
 
 
-        trackAdapter = new TrackAdapter(getActivity(), new ArrayList<TrackData>());
+        trackAdapter = new TrackAdapter(getActivity(), trackList);
 
         // Get a reference to the ListView, and attach this adapter to it.
         ListView listView = (ListView) rootView.findViewById(R.id.listview_topten);

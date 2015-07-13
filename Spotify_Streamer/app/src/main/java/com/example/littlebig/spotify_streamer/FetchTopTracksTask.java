@@ -1,7 +1,9 @@
 package com.example.littlebig.spotify_streamer;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +24,11 @@ public class FetchTopTracksTask extends AsyncTask<String,Void,TrackData[]>{
 
     private final String LOG_TAG = FetchArtistTask.class.getSimpleName();
 
-
+    private Context context;
+    //context from DetailActivity for display of toast in asynctask
+    public FetchTopTracksTask(Context context) {
+        this.context = context;
+    }
 
     protected TrackData[] doInBackground(String... params) {
 
@@ -46,34 +52,40 @@ public class FetchTopTracksTask extends AsyncTask<String,Void,TrackData[]>{
 
 
                 List<Track> tracks= results.tracks.subList(0, results.tracks.size());
-                TrackData[] data_track= new TrackData[tracks.size()];
 
-                for (int i = 0; i < tracks.size(); i++) {
+                if(tracks.size() == 0){
+                    return null;
+                }else {
 
-                    Track track = tracks.get(i);
-                    Log.i(LOG_TAG, i + " " + track.name);
+                    TrackData[] data_track = new TrackData[tracks.size()];
 
-                    if (track.album.images.size() != 0) {
-                        TrackData track_data = new TrackData(
-                                track.name,
-                                track.album.name,
-                                track.album.images.get(0).url
-                        );
-                        data_track[i] = track_data;
-                    } else {
-                        TrackData track_data = new TrackData(
-                                track.name,
-                                track.album.name,
-                                "http://www.sitindia.com/res/img/img-not-found.png"
-                        );
-                        data_track[i] = track_data;
+                    for (int i = 0; i < tracks.size(); i++) {
+
+                        Track track = tracks.get(i);
+                        Log.i(LOG_TAG, i + " " + track.name);
+
+                        if (track.album.images.size() != 0) {
+                            TrackData track_data = new TrackData(
+                                    track.name,
+                                    track.album.name,
+                                    track.album.images.get(0).url
+                            );
+                            data_track[i] = track_data;
+                        } else {
+                            TrackData track_data = new TrackData(
+                                    track.name,
+                                    track.album.name,
+                                    "http://www.sitindia.com/res/img/img-not-found.png"
+                            );
+                            data_track[i] = track_data;
+                        }
                     }
-                }
-                for (TrackData s : data_track) {
-                    Log.v(LOG_TAG, "ARTIST entry: " + s);
-                }
+                    for (TrackData s : data_track) {
+                        Log.v(LOG_TAG, "ARTIST entry: " + s);
+                    }
 
-                return data_track;
+                    return data_track;
+                }
 
             } catch (Exception e) {
                 Log.e(LOG_TAG, "Error ", e);
@@ -91,6 +103,8 @@ public class FetchTopTracksTask extends AsyncTask<String,Void,TrackData[]>{
             for ( TrackData tracks : result){
                 DetailActivityFragment.trackAdapter.add(tracks);
             }
+        }else {
+            Toast.makeText(context, "No top tracks found. Please pick another artist and try again.", Toast.LENGTH_LONG).show();
         }
     }
 
