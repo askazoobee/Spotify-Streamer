@@ -17,18 +17,19 @@ public class DetailActivity extends ActionBarActivity {
         setContentView(R.layout.activity_detail);
 
         if(savedInstanceState == null || !savedInstanceState.containsKey("tracks")) {
+
             onSearch(DetailActivityFragment.artist_name_extra);
+
         }
         else {
             DetailActivityFragment.trackList = savedInstanceState.getParcelableArrayList("tracks");
         }
 
-
     }
 
-    public void onStart() {
+/*    public void onStart() {
         super.onStart();
-    }
+    }*/
 
     public void onSearch(String name) {
         FetchTopTracksTask fetch_top_tracks = new FetchTopTracksTask(getApplicationContext());
