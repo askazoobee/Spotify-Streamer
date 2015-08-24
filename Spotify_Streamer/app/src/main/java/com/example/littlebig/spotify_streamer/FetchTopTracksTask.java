@@ -52,7 +52,6 @@ public class FetchTopTracksTask extends AsyncTask<String,Void,TrackData[]>{
 
 
                 List<Track> tracks= results.tracks.subList(0, results.tracks.size());
-
                 if(tracks.size() == 0){
                     return null;
                 }else {

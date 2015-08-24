@@ -1,0 +1,81 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.example.littlebig.spotify_streamer.PlayerDialogFragment"
+    android:layout_gravity="center_vertical"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:id="@+id/player">
+
+    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/artist_name"/>
+
+    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:id="@+id/album_name"/>
+
+    <ImageView android:text="@string/hello_world" android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:paddingBottom="10dp" />
+
+    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="10dp"
+        android:id="@+id/song_name"/>
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/scrubs"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="30dp"
+            android:src="@android:drawable/ic_media_previous"
+            android:onClick="onBack"
+            android:id="@+id/back_button"
+            />
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="30dp"
+            android:src="@android:drawable/ic_media_play"
+            android:onClick="onPlayandPause"
+            android:id="@+id/play_button"
+            />
+<!--        <Button
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="30dp"
+            android:drawableLeft="@android:drawable/ic_media_pause"
+            android:onClick="onPlayandPause"
+            android:id="@+id/pause_button"
+            android:visibility="invisible"
+            />-->
+        <ImageButton
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:onClick="onNext"
+            android:src="@android:drawable/ic_media_next"
+            android:id="@+id/next_button"
+            />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
