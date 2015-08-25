@@ -36,7 +36,7 @@ public class ArtistData implements Parcelable{
         parcel.writeString(artist_image);
     }
 
-    public final Parcelable.Creator<ArtistData> CREATOR = new Parcelable.Creator<ArtistData>() {
+    public static final Parcelable.Creator<ArtistData> CREATOR = new Parcelable.Creator<ArtistData>() {
         @Override
         public ArtistData createFromParcel(Parcel parcel) {
             return new ArtistData(parcel);

@@ -1,39 +1,27 @@
 package com.example.littlebig.spotify_streamer;
 
-import android.app.DialogFragment;
-import android.app.FragmentTransaction;
-
 import android.app.FragmentManager;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBarActivity;
+import android.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 
-public class PlayerActivity extends ActionBarActivity {
+public class PlayerV2 extends AppCompatActivity {
 
     boolean mIsLargeLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_player);
+        setContentView(R.layout.activity_player_v2);
+
         mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
 
-/*        ImageButton playButton = (ImageButton)findViewById(R.id.play_button);
-        //String message = "Launching the " + ((Button) v).setBackground();
-        playButton.setImageResource(android.R.drawable.ic_media_pause);*/
-
-
-       showDialog();
+       // showDialog();
 
     }
+
+
 
 
 
@@ -55,7 +43,6 @@ public class PlayerActivity extends ActionBarActivity {
                     .addToBackStack(null).commit();
         }
     }
-
 
 
 

@@ -1,7 +1,10 @@
 package com.example.littlebig.spotify_streamer;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 public class DetailActivityFragment extends Fragment {
 
     public static String artist_name_extra;
+    boolean mIsLargeLayout;
 
     public static TrackAdapter trackAdapter;
 public static ArrayList<TrackData> trackList = new ArrayList<TrackData>();
@@ -31,6 +35,7 @@ public static ArrayList<TrackData> trackList = new ArrayList<TrackData>();
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
         final View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         // The detail Activity called via intent.  Inspect the intent for artist data.
@@ -53,10 +58,12 @@ public static ArrayList<TrackData> trackList = new ArrayList<TrackData>();
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String trackname = adapterView.getItemAtPosition(i).toString();
+                String pos = String.valueOf(i);
                 // getActivity instead of ..adapterView.getContext()
-                Toast.makeText(getActivity(), "Artist: " + trackname, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity(), PlayerActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, trackname);
+                Toast.makeText(getActivity(), "Song: " + trackname, Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(getActivity(), PlayerV2.class)
+                        .putExtra(Intent.EXTRA_TEXT,pos);
                 startActivity(intent);
 
             }
@@ -66,6 +73,7 @@ public static ArrayList<TrackData> trackList = new ArrayList<TrackData>();
 
         return rootView;
     }
+
 
 
 
