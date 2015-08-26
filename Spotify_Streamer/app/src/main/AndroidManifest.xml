@@ -34,11 +34,11 @@
             android:name=".PlayerActivity"
             android:label="@string/title_activity_player" >
 
-            <!-- android:theme="@android:style/Theme.Holo.DialogWhenLarge"> -->
         </activity>
         <activity
             android:name=".PlayerV2"
-            android:label="@string/title_activity_player_v2" >
+            android:label="@string/title_activity_player_v2"
+            android:theme="@style/DialogTheme" >
         </activity>
     </application>
 

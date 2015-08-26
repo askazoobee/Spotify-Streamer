@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -27,6 +29,7 @@ public class PlayerV2Fragment extends DialogFragment {
 
 
     final MediaPlayer mediaPlayer = new MediaPlayer();
+    public static int seekLocation;
     // boolean isPlaying = true;
     private final String LOG_TAG = PlayerV2Fragment.class.getSimpleName();
     public static String song_url;
@@ -39,6 +42,8 @@ public class PlayerV2Fragment extends DialogFragment {
     TextView artistText;
     TextView albumText;
     TextView trackText;
+    SeekBar seekBar;
+    private Handler seekHandler = new Handler();
 
     PlayerTask fetch_song = new PlayerTask();
     String song = DetailActivityFragment.trackList.get(pos_extra).track_name;
@@ -61,6 +66,7 @@ public class PlayerV2Fragment extends DialogFragment {
         albumText = (TextView) rootview.findViewById(R.id.album_name);
         artistText = (TextView) rootview.findViewById(R.id.artist_name);
         trackText = (TextView) rootview.findViewById((R.id.song_name));
+        seekBar = (SeekBar) rootview.findViewById(R.id.scrubs);
 
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
@@ -139,6 +145,30 @@ public class PlayerV2Fragment extends DialogFragment {
             }
         });
 
+
+        seekBar.setMax(30000);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+
+                    if (mediaPlayer.isPlaying()) {
+                        mediaPlayer.seekTo(progress);
+                    }
+                }
+
+            }
+                    @Override
+                    public void onStartTrackingTouch(SeekBar seekBar) {
+
+                    }
+
+                    @Override
+                    public void onStopTrackingTouch(SeekBar seekBar) {
+
+                    }
+                });
+
         // playButton.setImageResource(android.R.drawable.ic_media_pause);
 
 /*        PlayerTask fetch_song = new PlayerTask();
@@ -158,7 +188,15 @@ public class PlayerV2Fragment extends DialogFragment {
             Log.i(LOG_TAG, "tk " + song_url);
             mediaPlayer.setDataSource(DetailActivityFragment.trackList.get(pos_extra).track_url);
             mediaPlayer.prepare();
+           // mediaPlayer.prepareAsync();
+          //  mediaPlayer.setOnPreparedListener();
+            if(seekLocation == 0)
             mediaPlayer.start();
+            else{
+                mediaPlayer.seekTo(seekLocation);
+                mediaPlayer.start();
+            }
+            updateSeek();
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -189,7 +227,31 @@ public class PlayerV2Fragment extends DialogFragment {
 
 
         }
+    public void updateSeek(){
+        seekBar.setProgress(mediaPlayer.getCurrentPosition());
 
-
+        // ping for updated position every second
+        seekHandler.postDelayed(run, 1000);
     }
+
+
+    Runnable run = new Runnable() {
+        @Override
+        public void run() {
+            updateSeek();
+        }
+    };
+
+
+    @Override
+    public void onDestroy(){
+        seekLocation = getMediaPlayer().getCurrentPosition();
+        getMediaPlayer().reset();
+        super.onDestroy();
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
+    }
+}
 

@@ -22,32 +22,16 @@ public class DetailActivity extends ActionBarActivity {
 
         if(savedInstanceState == null || !savedInstanceState.containsKey("tracks")) {
 
-            onSearch(DetailActivityFragment.artist_name_extra);
-
         }
         else {
             DetailActivityFragment.trackList = savedInstanceState.getParcelableArrayList("tracks");
         }
-
 
     }
 
 /*    public void onStart() {
         super.onStart();
     }*/
-
-    public void onSearch(String name) {
-        FetchTopTracksTask fetch_top_tracks = new FetchTopTracksTask(getApplicationContext());
-        fetch_top_tracks.execute(name);
-
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelableArrayList("tracks", MainActivityFragment.artistList);
-        super.onSaveInstanceState(outState);
-    }
 
 
 

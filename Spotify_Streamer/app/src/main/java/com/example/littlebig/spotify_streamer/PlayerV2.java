@@ -17,17 +17,21 @@ public class PlayerV2 extends AppCompatActivity {
 
         mIsLargeLayout = getResources().getBoolean(R.bool.large_layout);
 
-       // showDialog();
+        if(savedInstanceState == null || !savedInstanceState.containsKey("seekLoc")) {
+
+        }
+        else {
+            PlayerV2Fragment.seekLocation = savedInstanceState.getInt("seekLoc");
+        }
+
+      //  showDialog();
 
     }
-
-
-
-
+/*
 
     public void showDialog() {
         FragmentManager fragmentManager = getFragmentManager();
-        PlayerDialogFragment newFragment = new PlayerDialogFragment();
+        PlayerV2Fragment newFragment = new PlayerV2Fragment();
 
         if (mIsLargeLayout) {
             // The device is using a large layout, so show the fragment as a dialog
@@ -42,8 +46,15 @@ public class PlayerV2 extends AppCompatActivity {
             transaction.add(android.R.id.content, newFragment)
                     .addToBackStack(null).commit();
         }
-    }
+    }*/
 
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt("seekLoc", PlayerV2Fragment.seekLocation);
+        super.onSaveInstanceState(outState);
+    }
 
 
 }

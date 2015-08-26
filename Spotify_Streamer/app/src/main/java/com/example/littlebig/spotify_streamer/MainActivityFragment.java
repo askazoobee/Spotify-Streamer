@@ -24,8 +24,23 @@ import java.util.List;
  */
 public class MainActivityFragment extends Fragment {
 
+
     public static ArtistAdapter artistAdapter;
     public static ArrayList<ArtistData> artistList = new ArrayList<ArtistData>();
+
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callbacks {
+        /**
+         * Callback for when an item has been selected.
+         */
+        void onItemSelected(String artist);
+    }
+
 
     public MainActivityFragment() {
     }
@@ -44,7 +59,6 @@ public class MainActivityFragment extends Fragment {
         listView.setAdapter(artistAdapter);
 
 
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -52,21 +66,21 @@ public class MainActivityFragment extends Fragment {
                 TextView artist_name = (TextView) rootView.findViewById(R.id.artist_txt);
                 //bad code..
               //  Toast.makeText(getActivity(), "Artist: " + artist_name.getText().toString(), Toast.LENGTH_LONG).show();
-
               //  String artistname = artist_name.getText().toString();
-              String artistname = adapterView.getItemAtPosition(i).toString();
-                // getActivity instead of ..adapterView.getContext()
-                Toast.makeText(getActivity(), "Artist: " + artistname, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getActivity(), DetailActivity.class)
-                        .putExtra(Intent.EXTRA_TEXT, artistname);
-                startActivity(intent);
+
+                String artistname = adapterView.getItemAtPosition(i).toString();
+
+                ((Callbacks) getActivity()).onItemSelected(artistname);
+
 
             }
         });
 
-
-
         return rootView;
 
     }
+
+
+
+
 }
