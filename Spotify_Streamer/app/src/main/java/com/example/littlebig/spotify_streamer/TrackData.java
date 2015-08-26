@@ -11,17 +11,20 @@ public class TrackData implements Parcelable{
     String track_name;
     String album_name;
     String album_image; //drawable ID
+    String track_url;
 
-    public TrackData(String track,String album, String image){
+    public TrackData(String track,String album, String image, String trackurl){
         this.track_name = track;
         this.album_name = album;
         this.album_image = image;
+        this.track_url = trackurl;
         }
 
     private TrackData(Parcel in){
         track_name = in.readString();
         album_name = in.readString();
         album_image = in.readString();
+        track_url = in.readString();
     }
 
     @Override
@@ -36,6 +39,7 @@ public class TrackData implements Parcelable{
         parcel.writeString(track_name);
         parcel.writeString(album_name);
         parcel.writeString(album_image);
+        parcel.writeString(track_url);
     }
 
     public final Parcelable.Creator<TrackData> CREATOR = new Parcelable.Creator<TrackData>() {

@@ -67,14 +67,16 @@ public class FetchTopTracksTask extends AsyncTask<String,Void,TrackData[]>{
                             TrackData track_data = new TrackData(
                                     track.name,
                                     track.album.name,
-                                    track.album.images.get(0).url
+                                    track.album.images.get(0).url,
+                                    track.preview_url
                             );
                             data_track[i] = track_data;
                         } else {
                             TrackData track_data = new TrackData(
                                     track.name,
                                     track.album.name,
-                                    "http://www.sitindia.com/res/img/img-not-found.png"
+                                    "http://www.sitindia.com/res/img/img-not-found.png",
+                                    track.preview_url
                             );
                             data_track[i] = track_data;
                         }
