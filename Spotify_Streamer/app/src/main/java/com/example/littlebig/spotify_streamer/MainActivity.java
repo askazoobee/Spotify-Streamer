@@ -1,7 +1,10 @@
 package com.example.littlebig.spotify_streamer;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity implements MainActivityFragment.Callbacks{
+    private Toast mAppToast;
     private String search;
     boolean mIsLargeLayout;
     @Override
@@ -34,7 +38,19 @@ public class MainActivity extends ActionBarActivity implements MainActivityFragm
                         if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                             //...
                             search = search_artist.getText().toString();
-                            onSearch(search);
+
+                            if(isNetworkAvailable()) {
+                                onSearch(search);
+                            }else{
+                                if(mAppToast!=null){
+                                    mAppToast.cancel();
+                                }
+                                mAppToast = Toast.makeText(getApplicationContext(), "No network, Connect and try again.", Toast.LENGTH_LONG);
+                                mAppToast.show();
+                                //clear adapter. no point in displaying this content if there is no network
+                                MainActivityFragment.artistAdapter.clear();
+                            }
+
                             // ...
                             return true;
                         }
@@ -89,7 +105,13 @@ public class MainActivity extends ActionBarActivity implements MainActivityFragm
     }
 
 
-
+    //Based on a stackoverflow snippet
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 
 /*    public void searchArtist(View v) {
         EditText search = (EditText) findViewById(R.id.edit_artist);

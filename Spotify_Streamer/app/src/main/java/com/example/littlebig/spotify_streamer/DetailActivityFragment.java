@@ -3,8 +3,11 @@ package com.example.littlebig.spotify_streamer;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
  * A placeholder fragment containing a simple view.
  */
 public class DetailActivityFragment extends Fragment {
-
+    private Toast mAppToast;
     public static String artist_name_extra;
     boolean mIsLargeLayout;
 
@@ -48,8 +51,17 @@ public static ArrayList<TrackData> trackList = new ArrayList<TrackData>();
         artist_name_extra = intent.getStringExtra(Intent.EXTRA_TEXT);
     }
 
+if(isNetworkAvailable()) {
     onSearch(artist_name_extra);
-
+}else{
+    if(mAppToast!=null){
+        mAppToast.cancel();
+    }
+    mAppToast = Toast.makeText(getActivity(), "No network, Connect and try again.", Toast.LENGTH_LONG);
+    mAppToast.show();
+    //clear adapter. no point in displaying this content if there is no network
+   DetailActivityFragment.trackAdapter.clear();
+}
 
     trackAdapter = new TrackAdapter(getActivity(), trackList);
 
@@ -113,9 +125,6 @@ public static ArrayList<TrackData> trackList = new ArrayList<TrackData>();
 
 
 
-
-
-
         return rootView;
 
     }
@@ -132,6 +141,14 @@ public static ArrayList<TrackData> trackList = new ArrayList<TrackData>();
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList("tracks", MainActivityFragment.artistList);
         super.onSaveInstanceState(outState);
+    }
+
+    //Based on a stackoverflow snippet
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
 

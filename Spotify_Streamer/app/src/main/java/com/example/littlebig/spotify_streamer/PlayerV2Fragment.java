@@ -25,11 +25,12 @@ import java.io.IOException;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class PlayerV2Fragment extends DialogFragment {
+public class PlayerV2Fragment extends Fragment {
 
 
     final MediaPlayer mediaPlayer = new MediaPlayer();
     public static int seekLocation;
+    public static String seekUrl;
     // boolean isPlaying = true;
     private final String LOG_TAG = PlayerV2Fragment.class.getSimpleName();
     public static String song_url;
@@ -43,6 +44,8 @@ public class PlayerV2Fragment extends DialogFragment {
     TextView albumText;
     TextView trackText;
     SeekBar seekBar;
+    TextView currentDuration;
+    TextView remainingDuration;
     private Handler seekHandler = new Handler();
 
    // PlayerTask fetch_song = new PlayerTask();
@@ -67,11 +70,15 @@ public class PlayerV2Fragment extends DialogFragment {
         artistText = (TextView) rootview.findViewById(R.id.artist_name);
         trackText = (TextView) rootview.findViewById((R.id.song_name));
         seekBar = (SeekBar) rootview.findViewById(R.id.scrubs);
+        currentDuration = (TextView) rootview.findViewById((R.id.time_played));
+        remainingDuration = (TextView) rootview.findViewById((R.id.time_total));
 
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
             pos_extra = Integer.parseInt(getActivity().getIntent().getStringExtra(Intent.EXTRA_TEXT));
         }
+
+      //  seekDuration = getMediaPlayer().getDuration();
         //  fetch_song.execute(song);
         SetUp();
 
@@ -81,9 +88,12 @@ public class PlayerV2Fragment extends DialogFragment {
 
     }
 
-    /**
+/*
+    */
+/**
      * The system calls this only when creating the layout in a dialog.
-     */
+     *//*
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -99,6 +109,7 @@ public class PlayerV2Fragment extends DialogFragment {
 
         return dialog;
     }
+*/
 
     public void SetUp() {
 
@@ -146,7 +157,7 @@ public class PlayerV2Fragment extends DialogFragment {
         });
 
 
-        seekBar.setMax(30000);
+        seekBar.setMax(29000);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -158,16 +169,17 @@ public class PlayerV2Fragment extends DialogFragment {
                 }
 
             }
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
 
-                    }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
 
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
+            }
 
-                    }
-                });
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         // playButton.setImageResource(android.R.drawable.ic_media_pause);
 
@@ -185,18 +197,36 @@ public class PlayerV2Fragment extends DialogFragment {
 
             //  MediaPlayer mediaPlayer = new MediaPlayer();
             mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            song_url = DetailActivityFragment.trackList.get(pos_extra).track_url;
             Log.i(LOG_TAG, "tk " + song_url);
-            mediaPlayer.setDataSource(DetailActivityFragment.trackList.get(pos_extra).track_url);
+            mediaPlayer.setDataSource(song_url);
             mediaPlayer.prepare();
-           // mediaPlayer.prepareAsync();
-          //  mediaPlayer.setOnPreparedListener();
-            if(seekLocation == 0)
-            mediaPlayer.start();
+           // mediaPlayer.prepareAsync()
+/*            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                public void onPrepared(final MediaPlayer mp) {
+                   setMediaPlayer(mp);
+                    mediaPlayer.start();
+                }
+
+            });*/
+
+          //  mediaPlayer.start();
+
+            // mediaPlayer.prepareAsync();
+            //  mediaPlayer.setOnPreparedListener();
+        //    if (seekLocation == 0 || seekUrl != song_url) {
+
+                if (seekLocation == 0) {
+                mediaPlayer.start();
+
+            }
             else{
                 mediaPlayer.seekTo(seekLocation);
                 mediaPlayer.start();
             }
+
             updateSeek();
+
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -209,43 +239,80 @@ public class PlayerV2Fragment extends DialogFragment {
             Log.e(LOG_TAG, "Error ", e);
         }
 
-            playButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    if (!mediaPlayer.isPlaying()) {
-                        mediaPlayer.start();
-                        playButton.setImageResource(android.R.drawable.ic_media_pause);
-                        // isPlaying = true;
-                    } else {
-                        mediaPlayer.pause();
-                        // isPlaying = false;
-                        playButton.setImageResource(android.R.drawable.ic_media_play);
-                    }
+
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!mediaPlayer.isPlaying()) {
+                    mediaPlayer.start();
+                    playButton.setImageResource(android.R.drawable.ic_media_pause);
+
+
+                } else {
+                    mediaPlayer.pause();
+                    playButton.setImageResource(android.R.drawable.ic_media_play);
+
                 }
-            });
+            }
+        });
 
 
-        }
-    public void updateSeek(){
-        seekBar.setProgress(mediaPlayer.getCurrentPosition());
-
-        // ping for updated position every second
-        seekHandler.postDelayed(run, 1000);
     }
 
 
-    Runnable run = new Runnable() {
-        @Override
-        public void run() {
-            updateSeek();
-        }
-    };
+    public void updateSeek() {
+      //  if (mediaPlayer.isPlaying()) {
+            int position = mediaPlayer.getCurrentPosition();
+            int current_seconds = position / 1000 % 60;
+            //static 30 seconds because preview standard.
+            int left = 29000;
+            int seconds_left = left / 1000 % 60;
+            int end = seconds_left - current_seconds;
+
+            seekBar.setProgress(position);
+
+            if (current_seconds < 10) {
+                currentDuration.setText("00:0" + String.valueOf(current_seconds));
+            } else {
+                currentDuration.setText("00:" + String.valueOf(current_seconds));
+            }
+
+            if (end > 10) {
+                remainingDuration.setText("00:" + String.valueOf(end));
+            } else {
+                remainingDuration.setText("00:0" + String.valueOf(end));
+            }
+
+
+            if(current_seconds == 29){
+                playButton.setImageResource(android.R.drawable.ic_media_play);
+            }
+
+            // ping for updated position every second
+            seekHandler.postDelayed(run, 1000);
+
+      //  }
+    }
+
+
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+
+               // if(mediaPlayer.isPlaying()) {
+                    updateSeek();
+                }
+          //  }
+        };
+
 
 
     @Override
     public void onDestroy(){
         seekLocation = getMediaPlayer().getCurrentPosition();
+        seekUrl = song_url;
         getMediaPlayer().reset();
         super.onDestroy();
     }
@@ -253,5 +320,10 @@ public class PlayerV2Fragment extends DialogFragment {
     public MediaPlayer getMediaPlayer() {
         return mediaPlayer;
     }
+
+/*    public MediaPlayer setMediaPlayer(MediaPlayer medplay){
+        return this.mediaPlayer = medplay;
+    }*/
+
 }
 
