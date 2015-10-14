@@ -311,8 +311,8 @@ public class PlayerV2Fragment extends Fragment {
 
     @Override
     public void onDestroy(){
-        seekLocation = getMediaPlayer().getCurrentPosition();
-        seekUrl = song_url;
+       // seekLocation = getMediaPlayer().getCurrentPosition();
+      //  seekUrl = song_url;
         getMediaPlayer().reset();
         super.onDestroy();
     }
